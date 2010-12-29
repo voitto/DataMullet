@@ -11,7 +11,7 @@ Data-mullet is a NoSQL-style API for SQL databases
 ###### PYTHON
 
 	str = POST("https://user:pwd@datamullet.com/users/stuff/_insert'",
-	                   params = {'docs' : '[{"foo" : "bar"}]'},
+	                   params = {'docs' : '[{"x" : "1"}]'},
 	                   async = False )
 
 ###### CURL
