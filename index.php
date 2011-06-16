@@ -6,8 +6,8 @@
 // https://datamullet.com
 
 // Brian Hendrickson <brian@megapump.com>
-// Version: 0.1 
-// December 29, 2010
+// Version: 0.2 
+// June 16, 2011
 
 // IRC: irc.freenode.net #datamullet
 // Facebook: http://rp.ly/4i
