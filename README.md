@@ -41,6 +41,21 @@ Unzip the archive and copy Mullet.php to your Web root:
     RewriteCond %{REQUEST_FILENAME} !^/index.php
     RewriteCond %{DOCUMENT_ROOT}/%{REQUEST_FILENAME} !-f
     RewriteRule ^/(.+)$ /index.php/$1
+    
+Connect to a remote or local MySQL/CouchDB/MongoDB/PostgreSQL/SQLite
+
+    Local:
+    
+      define( 'DATABASE_NAME', 		'my_data' 							);
+      define( 'DATABASE_ENGINE', 		'pgsql' 									);  // or mysql, mongodb, pgsql, couchdb, sqlite
+      define( 'DATABASE_USER', 			'ben' 									);
+      define( 'DATABASE_PASSWORD', 	'' 												);
+      
+      
+      define( 'DATABASE_HOST', 			'' 							);    (optional)
+      define( 'DATABASE_PORT', 			5432 											);    (optional)
+
+    Remote:
 
 ## Roadmap
 
