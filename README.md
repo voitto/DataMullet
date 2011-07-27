@@ -54,31 +54,31 @@ What we're working on:
 
 say "hello"
 -------
-curl -X GET 'http://example/_hello'
+curl -X GET -u user:pwd 'http://example/_hello'
 
 list of databases
 -------
-curl -X GET 'http://example/_all_dbs'
+curl -X GET -u user:pwd 'http://example/_all_dbs'
 
 create a new database ("mydb")
 -------
-curl -X PUT 'http://example/mydb'
+curl -X PUT -u user:pwd 'http://example/mydb'
 
 create collection ("mystuff") and insert a document ( 'x' => 1 )
 -------
-curl --data 'docs=[{"x":1}]' 'http://example/mydb/mystuff/_insert'
+curl -X POST -u user:pwd --data 'docs=[{"x":1}]' 'http://example/mydb/mystuff/_insert'
 
 find a document
 -------
-curl -X GET 'http://example/mydb/mystuff/_find'
+curl -X GET -u user:pwd 'http://example/mydb/mystuff/_find'
 
 update a document
 -------
-curl --data 'criteria=[{"x":1}]&newobj=[{"x":2}]' 'http://example/mydb/mystuff/_update'
+curl -X POST -u user:pwd --data 'criteria=[{"x":1}]&newobj=[{"x":2}]' 'http://example/mydb/mystuff/_update'
 
 remove a document
 -------
-curl --data 'criteria=[{"x":1}]' 'http://example/mydb/mystuff/_remove'
+curl -X POST -u user:pwd --data 'criteria=[{"x":1}]' 'http://example/mydb/mystuff/_remove'
 
 ## PHP API
 
