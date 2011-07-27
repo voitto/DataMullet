@@ -46,6 +46,8 @@ Connect to a remote or local MySQL/CouchDB/MongoDB/PostgreSQL/SQLite
 
     Local:
     
+      To connect to a local PostgreSQL database, BEFORE you include 'Mullet.php' add these lines:
+    
       define( 'DATABASE_NAME', 		'my_data' 							);
       define( 'DATABASE_ENGINE', 		'pgsql' 									);  // or mysql, mongodb, pgsql, couchdb, sqlite
       define( 'DATABASE_USER', 			'ben' 									);
