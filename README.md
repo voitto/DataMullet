@@ -25,7 +25,7 @@ Data-mullet is a NoSQL-style API for SQL databases
 	$doc = array( 
 	   "x" => 1
 	);
-	$coll->insert( array($doc) );
+	$coll->insert( $doc );
 
 ## Installation
 
