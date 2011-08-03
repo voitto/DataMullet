@@ -16,7 +16,7 @@ Data-mullet is a NoSQL-style API for SQL databases
 
 ###### CURL
 
-	curl -u user:pwd --data 'docs=[{"x":1}]' 'https://datamullet.com/users/stuff/_insert'
+	curl -X POST -u user:pwd --data 'docs=[{"x":1}]' 'https://datamullet.com/users/stuff/_insert'
 
 ###### PHP
 
@@ -25,39 +25,45 @@ Data-mullet is a NoSQL-style API for SQL databases
 	$doc = array( 
 	   "x" => 1
 	);
-	$coll->insert( array($doc) );
+	$coll->insert( $doc );
 
 ## Installation
 
 Unzip the archive and copy Mullet.php to your Web root:
+--------------------------------------------------------
 
     tar xvzf datamullet-0.1.tar.gz
     cd datamullet-0.1
     cp Mullet.php /path/to/htdocs/
 
-.htaccess:
-
-    RewriteEngine on
-    RewriteCond %{REQUEST_FILENAME} !^/index.php
-    RewriteCond %{DOCUMENT_ROOT}/%{REQUEST_FILENAME} !-f
-    RewriteRule ^/(.+)$ /index.php/$1
-    
 Connect to a remote or local MySQL/CouchDB/MongoDB/PostgreSQL/SQLite
+--------------------------------------------------------
 
     Local:
     
-      To connect to a local PostgreSQL database, BEFORE you include 'Mullet.php' add these lines:
+      To connect to a local PostgreSQL database:
+      
+      BEFORE you include/require 'Mullet.php' add these lines:
     
       define( 'DATABASE_NAME', 		'my_data' 							);
-      define( 'DATABASE_ENGINE', 		'pgsql' 									);  // or mysql, mongodb, pgsql, couchdb, sqlite
-      define( 'DATABASE_USER', 			'ben' 									);
-      define( 'DATABASE_PASSWORD', 	'' 												);
-      
-      
-      define( 'DATABASE_HOST', 			'' 							);    (optional)
-      define( 'DATABASE_PORT', 			5432 											);    (optional)
+      define( 'DATABASE_ENGINE', 		'pgsql' 						  );  // or mysql, mongodb, pgsql, couchdb, sqlite
+      define( 'DATABASE_USER', 			'ben' 								);
+      define( 'DATABASE_PASSWORD', 	'' 										);
+      define( 'DATABASE_HOST', 			'' 							      );
+      define( 'DATABASE_PORT', 			5432 									);
 
     Remote:
+
+.htaccess: (optional, if you want to use HTTP API as well as PHP API)
+--------------------------------------------------------
+
+        If you want to set up the HTTP api, here is a .htaccess file that only works witha domain or subdomain (you will need a better .htaccess file to use the Data-mullet HTTP api [[[[ in a subfolder ]]]]).
+
+        RewriteEngine on
+        RewriteCond %{REQUEST_FILENAME} !^/index.php
+        RewriteCond %{DOCUMENT_ROOT}/%{REQUEST_FILENAME} !-f
+        RewriteRule ^/(.+)$ /index.php/$1
+
 
 ## Roadmap
 
@@ -139,17 +145,24 @@ $coll->remove( array( 'x' => 1 ));
 
 find up to 15 documents
 -------
-$cursor = $coll->find();
+$cursor = $coll->find(array( "x" => 1 ));
+
 foreach ($cursor as $id => $value) {
+
     echo "$id: ";
+
     var_dump( $value );
+
 }
 
 find up to 15 documents with criteria
 -------
 $query = array( "x" => 1 );
+
 $cursor = $coll->find( $query );
+
 while( $cursor->hasNext() )
+
     var_dump( $cursor->getNext() );
 
 
