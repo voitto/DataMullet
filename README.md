@@ -145,17 +145,24 @@ $coll->remove( array( 'x' => 1 ));
 
 find up to 15 documents
 -------
-$cursor = $coll->find();
+$cursor = $coll->find(array( "x" => 1 ));
+
 foreach ($cursor as $id => $value) {
+
     echo "$id: ";
+
     var_dump( $value );
+
 }
 
 find up to 15 documents with criteria
 -------
 $query = array( "x" => 1 );
+
 $cursor = $coll->find( $query );
+
 while( $cursor->hasNext() )
+
     var_dump( $cursor->getNext() );
 
 
