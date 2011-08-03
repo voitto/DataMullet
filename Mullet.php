@@ -76,6 +76,10 @@ class Mullet {
 					trigger_error('Mullet sqlite requires pdo sorry!',E_USER_ERROR);
 				}
 	      break;
+		  case 'mongodb':
+	      $this->dbclass = 'MulletMongoDB';
+			    $this->conn = new Mongo();
+	      break;
 		}
   }
 
@@ -1052,3 +1056,75 @@ function json_error($data) {
 	die;
 };
 
+
+
+
+class MulletMongoDB extends MulletDatabase {
+
+   function create_fields_if_not_exists( $doc, $name ) {
+   }
+
+   function create_if_not_exists( $doc, $name ) {
+	   
+   }
+   
+   function remove_doc( $criteria, $collname ) {
+	   //print_r($criteria);
+//	   exit;
+	   $dbname = $this->name;
+	   $db = $this->conn->$dbname;
+	   $coll = $db->$collname;
+	   $coll->remove($criteria);
+   }
+
+   function update_doc( $criteria, $newobj, $collname ) {
+	   $dbname = $this->name;
+	   $db = $this->conn->$dbname;
+	   $coll = $db->$collname;
+	   $coll->update($criteria,$newobj,array("multiple"=>true));
+
+   }
+
+   function insert_doc( $doc, $collname ) {
+	   $dbname = $this->name;
+	   $db = $this->conn->$dbname;
+	   $coll = $db->$collname;
+	   $coll->insert($doc);
+   }
+
+function count( $collname ) {
+}
+
+function validate_uniqueness_of( $collname, $key, $newval ) {
+}
+
+function find( $collname, $criteria = false ) {
+	
+	$dbname = $this->name;
+	$db = $this->conn->$dbname;
+	$coll = $db->$collname;
+	//$obj = array($criteria=>$val);
+	if (!$criteria) $result = $coll->find();
+	else
+	$result = $coll->find($criteria);
+	return $result;
+	//foreach ($obj as $key=>$val)
+//      if (in_array($key,array('keyname','jsonval')))
+	
+	//return new MulletIterator($result->results);
+	//foreach ($cursor as $obj) {
+//		echo $obj[$criteria] . " ";
+//	}
+	
+	//foreach ($cursor as $obj) {
+//		echo $obj[$criteria] . "\n";
+//	}
+	
+	   
+	
+}
+
+   function find_one( $collname ) {
+   }
+   
+}
