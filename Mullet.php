@@ -1,6 +1,5 @@
 <?php
 
-
 // Data-mullet
 // HTTP/REST API inspired by Mongo, Couch & Sleepy Mongoose
 // https://datamullet.com
@@ -80,6 +79,11 @@ class Mullet {
 	      $this->dbclass = 'MulletMongoDB';
 			    $this->conn = new Mongo();
 	      break;
+		  case 'couchdb':
+		  $this->dbclass = 'MulletCouchDB';
+		  		$this->conn = false;
+		  		//$this->conn = new couchClient(DATABASE_HOST.":".DATABASE_PORT,DATABASE_NAME);
+		  break;
 		}
   }
 
@@ -277,8 +281,8 @@ class MulletCollection {
 		return $this->db->update_doc( $criteria, $newobj, $this->name );
 	}
 	
-	function findOne() {
-    return $this->db->find_one( $this->name );
+	function findOne( $criteria = false ) {
+    return $this->db->find_one( $this->name, $criteria );
 	}
 
 	function count() {
@@ -1103,7 +1107,6 @@ function find( $collname, $criteria = false ) {
 	$dbname = $this->name;
 	$db = $this->conn->$dbname;
 	$coll = $db->$collname;
-	//$obj = array($criteria=>$val);
 	if (!$criteria) $result = $coll->find();
 	else
 	$result = $coll->find($criteria);
@@ -1125,6 +1128,88 @@ function find( $collname, $criteria = false ) {
 }
 
    function find_one( $collname ) {
+	   
+	$dbname = $this->name;
+	$db = $this->conn->$dbname;
+	$coll = $db->$collname;
+	if (!$criteria) $result = $coll->find();
+	else
+	$result = $coll->findOne($criteria);
+	return $result;
+	
    }
+   
+}
+
+
+
+
+class MulletCouchDB extends MulletDatabase {
+
+	function create_fields_if_not_exists( $doc, $name ) {
+	}
+	
+	function create_if_not_exists( $doc, $name ) {
+	   
+	}
+	
+	function remove_doc( $criteria, $collname ) {
+		$coll = new couchClient(DATABASE_HOST.":".DATABASE_PORT,$this->name."_".$collname);
+		if ( !$coll->databaseExists() ) {
+		$coll->createDatabase();
+		}
+		$result = $coll->getDoc($criteria["_id"]);
+		$coll->deleteDoc($result);	   
+	}
+	
+	function update_doc( $criteria, $newobj, $collname ) {
+	   
+	    $coll = new couchClient(DATABASE_HOST.":".DATABASE_PORT,$this->name."_".$collname);
+		if ( !$coll->databaseExists() ) {
+		$coll->createDatabase();
+		}
+		$result = $coll->getDoc($criteria["_id"]);
+		
+		foreach ($newobj as $k => $v) {
+		}
+		
+		$result->$k = $v;
+		return $result;
+	
+	}
+	
+	function insert_doc( $doc, $collname ) {
+	
+		$coll = new couchClient(DATABASE_HOST.":".DATABASE_PORT,$this->name."_".$collname);
+		if ( !$coll->databaseExists() ) {
+		$coll->createDatabase();
+		}
+		$document = new couchDocument($coll);
+		$document->set($doc);
+		
+	}
+	
+	function count( $collname ) {
+	}
+	
+	function validate_uniqueness_of( $collname, $key, $newval ) {
+	}
+	
+	function find( $collname, $criteria = false ) {
+		
+		$coll = new couchClient(DATABASE_HOST.":".DATABASE_PORT,$this->name."_".$collname);
+		if ( !$coll->databaseExists() ) {
+		$coll->createDatabase();
+		}
+		$result = $coll->getDoc($criteria["_id"]);
+		return $result;
+		   
+		
+	}
+	
+	function find_one( $collname, $criteria = false ) {
+		
+		
+	}
    
 }

@@ -3,6 +3,7 @@
 Data-mullet is a NoSQL-style API for SQL databases
 
 * [Data-mullet Home Page](https://datamullet.com)
+* Note: Users of the CouchDB-PHP combo will have to download and include the required library files for CouchDB to work with PHP. They can be found [here](https://github.com/dready92/PHP-on-Couch). The requires files are lib/couch.php, lib/couchClient.php, and lib/couchDocument.php.
 
 ## Example
 
